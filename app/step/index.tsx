@@ -5,6 +5,8 @@ import { Input } from "../../components/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
+import { useDataStore } from "../../store/data";
 
 const schema = z.object({
   name: z.string().min(1, { message: "O nome é obrigatorio" }),
@@ -23,6 +25,19 @@ export default function Step() {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  const setPageOne = useDataStore((state) => state.setPageOne);
+
+  function handleCreate(data: FormData) {
+    setPageOne({
+      name: data.name,
+      age: data.age,
+      height: data.height,
+      weight: data.weight,
+    });
+
+    router.push("/create");
+  }
 
   return (
     <View style={styles.container}>
@@ -62,7 +77,7 @@ export default function Step() {
           keyboardTypes="numeric"
         />
 
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={handleSubmit(handleCreate)}>
           <Text style={styles.buttonText}>Avançar</Text>
         </Pressable>
       </ScrollView>

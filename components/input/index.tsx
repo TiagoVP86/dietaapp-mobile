@@ -44,7 +44,7 @@ export function Input({
         )}
       />
 
-      {}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 }
