@@ -1,7 +1,7 @@
 import {
   View,
-  Text,
   StyleSheet,
+  Text,
   TextInput,
   KeyboardTypeOptions,
 } from "react-native";
@@ -14,7 +14,7 @@ interface InputProps {
   placeholder?: string;
   rules?: object;
   error?: string;
-  keyboardTypes: KeyboardTypeOptions;
+  keyboardType: KeyboardTypeOptions;
 }
 
 export function Input({
@@ -23,7 +23,7 @@ export function Input({
   placeholder,
   rules,
   error,
-  keyboardTypes,
+  keyboardType,
 }: InputProps) {
   return (
     <View style={styles.container}>
@@ -35,11 +35,10 @@ export function Input({
           <TextInput
             style={styles.input}
             placeholder={placeholder}
-            placeholderTextColor={"#9E9E9E"}
-            onChangeText={onChange}
-            value={value}
-            keyboardType={keyboardTypes}
             onBlur={onBlur}
+            value={value}
+            onChangeText={onChange}
+            keyboardType={keyboardType}
           />
         )}
       />
@@ -53,16 +52,13 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
   },
-
   input: {
-    backgroundColor: colors.white,
-    borderRadius: 4,
-    paddingHorizontal: 10,
     height: 44,
+    backgroundColor: colors.white,
+    paddingHorizontal: 10,
+    borderRadius: 4,
   },
-
   errorText: {
-    fontSize: 12,
     color: "red",
     marginTop: 4,
   },

@@ -1,18 +1,19 @@
-import { Text, View, StyleSheet, Pressable, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { colors } from "../../constants/colors";
 import { Header } from "../../components/header";
 import { Input } from "../../components/input";
+
 import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 import { useDataStore } from "../../store/data";
 
 const schema = z.object({
-  name: z.string().min(1, { message: "O nome é obrigatorio" }),
-  weight: z.string().min(1, { message: "O peso é obrigatorio" }),
-  age: z.string().min(1, { message: "A idade é obrigatoria" }),
-  height: z.string().min(1, { message: "A altura é obrigatoria" }),
+  name: z.string().min(1, { message: "O nome é obrigatório" }),
+  weight: z.string().min(1, { message: "O peso é obrigatório" }),
+  age: z.string().min(1, { message: "A idade é obrigatória" }),
+  height: z.string().min(1, { message: "A altura é obrigatória" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -29,11 +30,13 @@ export default function Step() {
   const setPageOne = useDataStore((state) => state.setPageOne);
 
   function handleCreate(data: FormData) {
+    console.log("PASSANDO DADOS DA PAGINA 1");
+
     setPageOne({
       name: data.name,
+      weight: data.weight,
       age: data.age,
       height: data.height,
-      weight: data.weight,
     });
 
     router.push("/create");
@@ -48,33 +51,36 @@ export default function Step() {
         <Input
           name="name"
           control={control}
-          placeholder="Digite seu nome"
+          placeholder="Digite seu nome..."
           error={errors.name?.message}
-          keyboardTypes="default"
+          keyboardType="default"
         />
+
         <Text style={styles.label}>Seu peso atual:</Text>
         <Input
           name="weight"
           control={control}
-          placeholder="Ex: 80.5"
+          placeholder="Ex: 75"
           error={errors.weight?.message}
-          keyboardTypes="numeric"
+          keyboardType="numeric"
         />
+
         <Text style={styles.label}>Sua altura atual:</Text>
         <Input
           name="height"
           control={control}
-          placeholder="Ex: 1.80"
+          placeholder="Ex: 1.90"
           error={errors.height?.message}
-          keyboardTypes="numeric"
+          keyboardType="numeric"
         />
+
         <Text style={styles.label}>Sua idade atual:</Text>
         <Input
           name="age"
           control={control}
-          placeholder="Ex: 30"
+          placeholder="Ex: 24"
           error={errors.age?.message}
-          keyboardTypes="numeric"
+          keyboardType="numeric"
         />
 
         <Pressable style={styles.button} onPress={handleSubmit(handleCreate)}>
@@ -90,29 +96,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-
   content: {
-    paddingHorizontal: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
-
   label: {
     fontSize: 16,
     color: colors.white,
     fontWeight: "bold",
+    marginBottom: 8,
   },
-
   button: {
     backgroundColor: colors.blue,
-    borderRadius: 4,
-    padding: 16,
-    marginTop: 44,
+    height: 44,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 4,
   },
-
   buttonText: {
     color: colors.white,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
 });
