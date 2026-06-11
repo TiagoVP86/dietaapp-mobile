@@ -1,50 +1,123 @@
-# Welcome to your Expo app 👋
+<div align="center">
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# 🥗 Dieta.AI — Mobile
 
-## Get started
+**App mobile que gera planos de dieta personalizados usando IA (Google Gemini)**
 
-1. Install dependencies
+[![React Native](https://img.shields.io/badge/React_Native-0.7x-61DAFB?style=flat&logo=react&logoColor=white)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-Router-000020?style=flat&logo=expo&logoColor=white)](https://expo.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-94%25-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Gemini](https://img.shields.io/badge/Google-Gemini_AI-8E75B2?style=flat&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 
-   ```bash
-   npm install
-   ```
+</div>
 
-2. Start the app
+---
 
-   ```bash
-    npx expo start
-   ```
+## 💡 Sobre o projeto
 
-In the output, you'll find options to open the app in a
+O **Dieta.AI** coleta informações do usuário (peso, altura, idade, objetivo, nível de atividade física) através de um fluxo de formulário em etapas e envia esses dados para o **Google Gemini**, que gera um plano alimentar completo e personalizado — refeições, horários, alimentos e suplementação sugerida.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+O projeto foi construído com foco em boas práticas de arquitetura mobile:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Validação de formulários** com schema typing (entrada do usuário nunca chega "crua" na API)
+- **Estado global** centralizado para os dados coletados entre as etapas
+- **Camada de serviços** isolada para comunicação com a API
+- **Tipagem forte de ponta a ponta** — da entrada do formulário até a resposta da IA
 
-## Get a fresh project
+### Funcionalidades
 
-When you're ready, run:
+- 📝 Fluxo de cadastro em etapas (peso, altura, idade, gênero, objetivo e nível de atividade)
+- 🤖 Geração de plano alimentar completo pelo **Google Gemini** (refeições, horários e suplementos)
+- 📤 Compartilhamento da dieta gerada via Share API nativa
+- ⏳ Feedback visual de carregamento enquanto a IA processa a resposta
+
+---
+
+## 🛠️ Tecnologias
+
+| Categoria | Stack |
+|---|---|
+| Framework | React Native + Expo (Expo Router, file-based routing) |
+| Linguagem | TypeScript |
+| Estado global | Zustand <!-- TODO: confirme --> |
+| Data fetching | TanStack React Query <!-- TODO: confirme --> |
+| Formulários | React Hook Form + Zod <!-- TODO: confirme --> |
+| IA | Google Gemini (via API backend) |
+
+---
+
+## 🏗️ Arquitetura
+
+```
+dietaapp-mobile/
+├── app/            # Telas e rotas (Expo Router)
+│   ├── index.tsx   # Onboarding
+│   ├── step/       # Fluxo de coleta de dados
+│   ├── create/     # Dados de objetivo e atividade
+│   └── nutrition/  # Exibição da dieta gerada
+├── components/     # Componentes reutilizáveis (inputs, header, etc.)
+├── services/       # Cliente HTTP e integração com a API
+├── store/          # Estado global (dados do usuário entre etapas)
+├── constants/      # Cores e temas
+└── types/          # Tipagens compartilhadas (ex: resposta da IA)
+```
+<!-- TODO: ajuste os nomes das pastas internas de app/ conforme o projeto real -->
+
+### Como funciona a integração com o Gemini
+
+1. O usuário preenche o fluxo de etapas; cada etapa valida e persiste os dados no store global
+2. Ao finalizar, o app envia os dados para a API <!-- TODO: link do repo do backend, se houver -->
+3. A API monta um prompt estruturado e consulta o **Google Gemini**, exigindo resposta em JSON tipado
+4. O app recebe o plano de dieta e renderiza as refeições, com opção de **compartilhar a dieta** via Share API nativa
+
+---
+
+## 🚀 Como rodar
+
+### Pré-requisitos
+
+- Node.js 18+
+- Expo Go no celular **ou** emulador Android/iOS configurado
+
+### Passos
 
 ```bash
-npm run reset-project
+# Clone o repositório
+git clone https://github.com/TiagoVP86/dietaapp-mobile.git
+cd dietaapp-mobile
+
+# Instale as dependências
+npm install
+
+# Configure a URL da API
+# <!-- TODO: descreva aqui o .env ou constante usada, ex: -->
+# cp .env.example .env  →  EXPO_PUBLIC_API_URL=http://SEU_IP:3333
+
+# Inicie o app
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Escaneie o QR code com o **Expo Go** ou pressione `a` para abrir no emulador Android.
 
-## Learn more
+> ⚠️ O app depende da API backend rodando para gerar as dietas.
+> <!-- TODO: linke o repositório do backend aqui, ou documente como subir -->
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📚 O que pratiquei neste projeto
 
-## Join the community
+- Navegação **file-based** com Expo Router em fluxo multi-etapas
+- Gerenciamento de **estado global** compartilhado entre telas
+- Consumo de **IA generativa (Gemini)** com resposta estruturada e tipada
+- Tratamento de **estados de loading e erro** em chamadas assíncronas
+- Componentização e tipagem forte com **TypeScript**
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 👨‍💻 Autor
+
+**Tiago Vieira Pires** — Full Stack & Mobile Developer
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tiagovieirapires/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-tiagovp86.github.io-FF5722?style=flat&logo=googlechrome&logoColor=white)](https://tiagovp86.github.io/portfolio)
+[![Email](https://img.shields.io/badge/Email-t.vp%40hotmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:t.vp@hotmail.com)
